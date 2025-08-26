@@ -1,15 +1,72 @@
 <script>
+  import { onMount } from 'svelte';
+  import { compile } from 'svelte/compiler';
   import { generateCode } from '$lib/api.js';
-  let prompt = "";
-  let generatedCode = "";
+
+  let apiKey = '';
+  let prompt = '';
+  let chatHistory = [];  // Historique des messages pour itération
+  let generatedCode = '';
+  let compiledComponent = null;
+  let error = '';
   let loading = false;
-  let layout = "horizontal"; // "horizontal" ou "vertical"
+  let historyStack = [];  // Pour undo: stocke {code, chatHistory}
+  let layout = "horizontal";
+
+  onMount(() => {
+    apiKey = localStorage.getItem('openai_api_key') || '';
+  });
+
+  function saveApiKey() {
+    localStorage.setItem('openai_api_key', apiKey);
+    alert('Clé API sauvegardée localement.');
+  }
 
   async function handleGenerate() {
     if (!prompt) return;
     loading = true;
-    generatedCode = await generateCode(prompt);
-    loading = false;
+    error = '';
+    try {
+      // Ajoute le nouveau prompt à l'historique
+      const newMessages = [...chatHistory, { role: "user", content: prompt }];
+      const code = await generateCode(newMessages);
+      if (code.includes('Erreur')) throw new Error(code);
+
+      // Sauvegarde pour undo
+      historyStack = [...historyStack, { code: generatedCode, chat: chatHistory }];
+
+      generatedCode = code;
+      chatHistory = newMessages.concat({ role: "assistant", content: code });  // Ajoute réponse à historique
+      compileAndRender(code);
+      prompt = '';  // Clear pour next itération
+    } catch (e) {
+      error = e.message;
+    } finally {
+      loading = false;
+    }
+  }
+
+  function undo() {
+    if (historyStack.length === 0) return;
+    const prev = historyStack.pop();
+    generatedCode = prev.code;
+    chatHistory = prev.chat;
+    compileAndRender(generatedCode);
+  }
+
+  function compileAndRender(code) {
+    try {
+      const { js, css } = compile(code, { generate: 'dom', hydratable: true });
+      const Component = eval(`(() => { ${js.code}; return SvelteComponent; })()`);  // Eval JS compilé (attention: sécurité, mais OK pour ce tool)
+      compiledComponent = new Component({ target: document.getElementById('preview-target') });
+      
+      // Ajoute CSS
+      const style = document.createElement('style');
+      style.textContent = css.code;
+      document.head.appendChild(style);
+    } catch (e) {
+      error = `Erreur de compilation: ${e.message}`;
+    }
   }
 
   function toggleLayout() {
@@ -17,25 +74,37 @@
   }
 </script>
 
-<h1>Conception AI – Générateur de Svelte</h1>
+<h1>Conception AI – Générateur de Pages Svelte</h1>
+
+<!-- Input pour API Key -->
+<section class="panel">
+  <h2>Clé API OpenAI (stockée localement)</h2>
+  <input type="text" bind:value={apiKey} placeholder="sk-...">
+  <button on:click={saveApiKey}>Sauvegarder</button>
+</section>
 
 <div class="controls">
   <button on:click={handleGenerate} disabled={loading}>
-    {loading ? "Génération en cours..." : "Générer"}
+    {loading ? "Génération..." : "Générer/Itérer"}
   </button>
+  <button on:click={undo} disabled={historyStack.length === 0}>Undo</button>
   <button on:click={toggleLayout}>
     Basculer en {layout === "horizontal" ? "vertical" : "horizontal"}
   </button>
 </div>
 
+{#if error}
+  <p class="error">{error}</p>
+{/if}
+
 <div class="container {layout}">
   <section class="panel">
-    <h2>Prompt</h2>
-    <textarea bind:value={prompt} placeholder="Décris la page que tu veux générer..."></textarea>
+    <h2>Prompt (pour itération)</h2>
+    <textarea bind:value={prompt} placeholder="Décris ou raffine la page... (e.g., 'Ajoute un bouton rouge')"></textarea>
   </section>
 
   <section class="panel">
-    <h2>Code généré</h2>
+    <h2>Code Généré</h2>
     {#if generatedCode}
       <pre><code>{generatedCode}</code></pre>
     {/if}
@@ -43,13 +112,18 @@
 
   <section class="panel">
     <h2>Aperçu</h2>
-    {#if generatedCode}
-      <div class="preview">
-        {@html generatedCode}
-      </div>
-    {/if}
+    <div id="preview-target" class="preview"></div>
   </section>
 </div>
+
+<!-- Ajoute une section pour voir l'historique chat (optionnel mais utile pour DX) -->
+<section class="panel">
+  <h2>Historique Conversation</h2>
+  {#each chatHistory as msg}
+    <p><strong>{msg.role}:</strong> {msg.content}</p>
+  {/each}
+</section>
+
 
 <style>
   :global(body) {
@@ -140,4 +214,7 @@
       margin-bottom: 10px;
     }
   }
+
+  .error { color: red; text-align: center; }
+  #preview-target { min-height: 200px; border: 1px solid #a9ffae; padding: 10px; }
 </style>
