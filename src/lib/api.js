@@ -16,7 +16,14 @@ export async function generateCode(messages) {  // Change à messages pour suppo
     body: JSON.stringify({
       model: "gpt-4o-mini",  // Change à un modèle plus récent/meilleur
       messages: [
-        { role: "system", content: "Tu es un assistant expert qui génère du code Svelte minimal, fonctionnel et valide. Retourne uniquement le code Svelte complet (avec <script>, HTML et <style> si needed), sans explications supplémentaires." },
+                {
+          role: "system",
+          content:
+            "Tu es un assistant expert qui génère du code Svelte 5.38.5 minimal, fonctionnel et valide. \
+Utilise uniquement des valeurs statiques pour les variables, par exemple, remplace `$state('Bonjour')` par 'Hello World!'. \
+Retourne uniquement le code Svelte complet (avec <script>, HTML et <style> si nécessaire), \
+sans markdown, sans explications, et sans imports externes inutiles."
+        },
         ...messages  // Supporte historique conversationnel
       ],
       temperature: 0.7,  // Optionnel : pour plus de créativité contrôlée
