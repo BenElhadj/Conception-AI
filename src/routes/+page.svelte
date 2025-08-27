@@ -59,27 +59,41 @@
       const previewTarget = document.getElementById("preview-target");
       previewTarget.innerHTML = "";
 
-      // Isoler le script et le style du code généré
+      // Parser le code généré
       const parser = new DOMParser();
       const doc = parser.parseFromString(code, "text/html");
 
-      // Ajouter le style
+      // Nettoyer le style précédent
+      const oldStyle = document.getElementById("dynamic-style");
+      if (oldStyle) oldStyle.remove();
+
+      // Ajouter le <style> du code généré
       const style = doc.querySelector("style");
       if (style) {
-        const oldStyle = document.getElementById("dynamic-style");
-        if (oldStyle) oldStyle.remove();
         style.id = "dynamic-style";
         document.head.appendChild(style);
       }
 
-      // Ajouter le HTML
-      const bodyContent = doc.body.innerHTML;
+      // Ajouter le HTML (hors <html>/<body>)
+      const bodyContent = Array.from(doc.body.childNodes)
+        .filter((n) => n.tagName !== "SCRIPT" && n.tagName !== "STYLE")
+        .map((n) => n.outerHTML || n.textContent)
+        .join("");
       previewTarget.innerHTML = bodyContent;
+
+      // Exécuter le <script> (si présent)
+      const script = doc.querySelector("script");
+      if (script) {
+        const newScript = document.createElement("script");
+        newScript.textContent = script.textContent;
+        previewTarget.appendChild(newScript);
+      }
 
     } catch (e) {
       error = `Erreur de rendu: ${e.message}`;
     }
   }
+
 
 
   function toggleLayout() {

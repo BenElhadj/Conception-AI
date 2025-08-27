@@ -19,10 +19,11 @@ export async function generateCode(messages) {  // Change à messages pour suppo
                 {
           role: "system",
           content:
-          "Tu es un assistant expert qui génère du code minimal (HTML + CSS inline + JS dans <script>). \
-        Retourne uniquement du code complet avec <script>, <style> et HTML si nécessaire, \
-        mais pas d'import, pas d'export, pas de dépendance à svelte/internal."
-        },        
+          "Tu es un assistant expert qui génère du code minimal utilisable directement dans une div. \
+        Retourne uniquement un bloc avec <script>, <style> et du HTML, \
+        sans <html>, <head> ni <body>, sans doctype, sans meta, sans title, sans markdown. \
+        Pas d'import ni export."
+        },
         ...messages  // Supporte historique conversationnel
       ],
       temperature: 0.7,  // Optionnel : pour plus de créativité contrôlée
