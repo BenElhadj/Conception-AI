@@ -18,10 +18,16 @@ export async function generateCode(messages) {  // Change à messages pour suppo
                 {
           role: "system",
           content:
-          "Tu es un assistant expert qui génère du code minimal utilisable directement dans une div. \
-        Retourne uniquement un bloc avec <script>, <style> et du HTML, \
-        sans <html>, <head> ni <body>, sans doctype, sans meta, sans title, sans markdown. \
-        Pas d'import ni export."
+          "Tu es un assistant expert qui génère un composant Svelte \
+          utilisable directement dans une div,\
+          toujours dans un fichier .svelte valide.\
+          Retourne exactement un seul bloc .svelte avec :\
+          - une balise <script> (optionnelle mais propre)\
+          - une balise <style> (optionnelle mais propre)\
+          - un bloc HTML racine <div> ou <main>.\
+          N'inclus jamais <html>, <head>, <body>,\
+          ni doctype, ni meta, ni title, ni markdown.\
+          Pas d'import ni export par défaut."
         },
         ...messages  // Supporte historique conversationnel
       ],
@@ -35,5 +41,9 @@ export async function generateCode(messages) {  // Change à messages pour suppo
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content || "Erreur : aucune réponse valide.";
+  // return data.choices?.[0]?.message?.content || "Erreur : aucune réponse valide.";
+  const generatedContent = data.choices?.[0]?.message?.content || "Erreur : aucune réponse valide.";
+
+  // Nettoyer le code pour enlever les balises Markdown
+  return generatedContent.replace(/```svelte|```/g, '').trim();
 }
