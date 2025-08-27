@@ -54,27 +54,32 @@
     compileAndRender(generatedCode);
   }
 
-function compileAndRender(code) {
-  try {
-    const { js, css } = compile(code, { generate: 'dom', hydratable: true });
-    
-    // Créez un nouveau script pour exécuter le code compilé
-    const script = document.createElement('script');
-    script.textContent = js.code;
-    document.body.appendChild(script);
+  function compileAndRender(code) {
+    try {
+      const previewTarget = document.getElementById("preview-target");
+      previewTarget.innerHTML = "";
 
-    // Instanciez le composant après que le script a été ajouté
-    const Component = window.SvelteComponent; // Assurez-vous que SvelteComponent est défini dans le contexte global
-    compiledComponent = new Component({ target: document.getElementById('preview-target') });
-    
-    // Ajoutez le CSS
-    const style = document.createElement('style');
-    style.textContent = css.code;
-    document.head.appendChild(style);
-  } catch (e) {
-    error = `Erreur de compilation: ${e.message}`;
+      // Isoler le script et le style du code généré
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(code, "text/html");
+
+      // Ajouter le style
+      const style = doc.querySelector("style");
+      if (style) {
+        const oldStyle = document.getElementById("dynamic-style");
+        if (oldStyle) oldStyle.remove();
+        style.id = "dynamic-style";
+        document.head.appendChild(style);
+      }
+
+      // Ajouter le HTML
+      const bodyContent = doc.body.innerHTML;
+      previewTarget.innerHTML = bodyContent;
+
+    } catch (e) {
+      error = `Erreur de rendu: ${e.message}`;
+    }
   }
-}
 
 
   function toggleLayout() {
@@ -124,14 +129,13 @@ function compileAndRender(code) {
   </section>
 </div>
 
-<!-- Ajoute une section pour voir l'historique chat (optionnel mais utile pour DX) -->
+<!-- Historique conversation -->
 <section class="panel">
   <h2>Historique Conversation</h2>
   {#each chatHistory as msg}
     <p><strong>{msg.role}:</strong> {msg.content}</p>
   {/each}
 </section>
-
 
 <style>
   :global(body) {

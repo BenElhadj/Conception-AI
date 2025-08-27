@@ -19,11 +19,10 @@ export async function generateCode(messages) {  // Change à messages pour suppo
                 {
           role: "system",
           content:
-            "Tu es un assistant expert qui génère du code Svelte 5.38.5 minimal, fonctionnel et valide. \
-Utilise uniquement des valeurs statiques pour les variables, par exemple, remplace `$state('Bonjour')` par 'Hello World!'. \
-Retourne uniquement le code Svelte complet (avec <script>, HTML et <style> si nécessaire), \
-sans markdown, sans explications, et sans imports externes inutiles."
-        },
+          "Tu es un assistant expert qui génère du code minimal (HTML + CSS inline + JS dans <script>). \
+        Retourne uniquement du code complet avec <script>, <style> et HTML si nécessaire, \
+        mais pas d'import, pas d'export, pas de dépendance à svelte/internal."
+        },        
         ...messages  // Supporte historique conversationnel
       ],
       temperature: 0.7,  // Optionnel : pour plus de créativité contrôlée
