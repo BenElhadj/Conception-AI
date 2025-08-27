@@ -206,16 +206,12 @@
       {/if}
     </section>
   
-    <!-- <section class="panel">
-      <h2>Preview</h2>
-      <div id="preview-target" class="preview"></div>
-    </section> -->
     <section class="panel">
       <h2>Preview</h2>
       <iframe 
         id="preview-iframe" 
         class="preview"
-        sandbox="allow-scripts allow-same-origin"
+        sandbox="allow-scripts"
         referrerpolicy="no-referrer">
       </iframe>
     </section>
@@ -339,12 +335,6 @@
         flex: 1;
         margin-bottom: 10px;
       }
-    }
-  
-    #preview-target {
-      min-height: 200px;
-      border: 1px solid  #ccc;
-      padding: 10px;
     }
   
     /* Modal */
