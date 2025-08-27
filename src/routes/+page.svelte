@@ -212,7 +212,8 @@
         id="preview-iframe" 
         class="preview"
         sandbox="allow-scripts"
-        referrerpolicy="no-referrer">
+        referrerpolicy="no-referrer"
+        title="Preview Generated Code">
       </iframe>
     </section>
   </div>
