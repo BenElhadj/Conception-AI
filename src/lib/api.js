@@ -1,4 +1,3 @@
-// src/lib/api.js
 const API_URL = "https://api.openai.com/v1/chat/completions";
 
 export async function generateCode(messages) {  // Change à messages pour supporter conversation

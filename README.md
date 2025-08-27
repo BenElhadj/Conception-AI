@@ -37,7 +37,10 @@ Elle utilise l’API OpenAI fournie par l’utilisateur et propose :
 - npm install
 
 ### 3. Lancement en local
+   **pour lancer**
 - npm run dev
+   **pour lancer et tester le build**
+- npm run build && npm run preview
 
 ## Configuration de la clé API
 
