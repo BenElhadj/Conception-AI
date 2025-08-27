@@ -54,20 +54,28 @@
     compileAndRender(generatedCode);
   }
 
-  function compileAndRender(code) {
-    try {
-      const { js, css } = compile(code, { generate: 'dom', hydratable: true });
-      const Component = eval(`(() => { ${js.code}; return SvelteComponent; })()`);  // Eval JS compilé (attention: sécurité, mais OK pour ce tool)
-      compiledComponent = new Component({ target: document.getElementById('preview-target') });
-      
-      // Ajoute CSS
-      const style = document.createElement('style');
-      style.textContent = css.code;
-      document.head.appendChild(style);
-    } catch (e) {
-      error = `Erreur de compilation: ${e.message}`;
-    }
+function compileAndRender(code) {
+  try {
+    const { js, css } = compile(code, { generate: 'dom', hydratable: true });
+    
+    // Créez un nouveau script pour exécuter le code compilé
+    const script = document.createElement('script');
+    script.textContent = js.code;
+    document.body.appendChild(script);
+
+    // Instanciez le composant après que le script a été ajouté
+    const Component = window.SvelteComponent; // Assurez-vous que SvelteComponent est défini dans le contexte global
+    compiledComponent = new Component({ target: document.getElementById('preview-target') });
+    
+    // Ajoutez le CSS
+    const style = document.createElement('style');
+    style.textContent = css.code;
+    document.head.appendChild(style);
+  } catch (e) {
+    error = `Erreur de compilation: ${e.message}`;
   }
+}
+
 
   function toggleLayout() {
     layout = layout === "horizontal" ? "vertical" : "horizontal";
