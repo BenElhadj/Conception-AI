@@ -90,39 +90,41 @@
   
     function compileAndRender(code) {
       try {
-        const previewTarget = document.getElementById("preview-target");
-        previewTarget.innerHTML = "";
-  
-        // Extraire style et HTML
-        const styleMatch = code.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-        const htmlOnly = code
+        // Nettoyer le code généré (pas de doctype, html, head, body)
+        const cleanCode = code
+          .replace(/<!DOCTYPE[^>]*>/gi, '')
+          .replace(/<\/?(html|head|body)[^>]*>/gi, '');
+
+        // Extraire style et script
+        const styleMatch = cleanCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        const scriptMatch = cleanCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+
+        let htmlOnly = cleanCode
           .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
           .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
-  
-        // Appliquer style
-        let style = document.getElementById("dynamic-style");
-        if (style) style.remove();
-        if (styleMatch) {
-          style = document.createElement("style");
-          style.id = "dynamic-style";
-          style.textContent = styleMatch[1];
-          document.head.appendChild(style);
+
+        // Reconstituer un document isolé
+        const srcdoc = `
+          <html>
+            <head>
+              ${styleMatch ? `<style>${styleMatch[1]}</style>` : ""}
+            </head>
+            <body>
+              ${htmlOnly}
+              ${scriptMatch ? `<script>${scriptMatch[1]}<\/script>` : ""}
+            </body>
+          </html>
+        `;
+
+        const iframe = document.getElementById("preview-iframe");
+        if (iframe) {
+          iframe.srcdoc = srcdoc;
         }
-  
-        // Injecter HTML
-        previewTarget.innerHTML = htmlOnly;
-  
-        // Exécuter script en sandbox
-        const scriptMatch = code.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
-        if (scriptMatch) {
-          const scriptFunc = new Function(scriptMatch[1]);
-          scriptFunc();
-        }
-  
       } catch (e) {
         error = `Render error: ${e.message}`;
       }
     }
+
   
     function downloadSvelte() {
       const code = get(generatedCode);
@@ -204,9 +206,18 @@
       {/if}
     </section>
   
-    <section class="panel">
+    <!-- <section class="panel">
       <h2>Preview</h2>
       <div id="preview-target" class="preview"></div>
+    </section> -->
+    <section class="panel">
+      <h2>Preview</h2>
+      <iframe 
+        id="preview-iframe" 
+        class="preview"
+        sandbox="allow-scripts allow-same-origin"
+        referrerpolicy="no-referrer">
+      </iframe>
     </section>
   </div>
   

@@ -18,7 +18,7 @@ export async function generateCode(messages) {  // Change à messages pour suppo
                 {
           role: "system",
           content:
-          "Tu es un assistant expert qui génère du code minimal utilisable directement dans une div. \
+          "Tu es un assistant expert qui génère du code svelte minimal utilisable directement dans une div. \
         Retourne uniquement un bloc avec <script>, <style> et du HTML, \
         sans <html>, <head> ni <body>, sans doctype, sans meta, sans title, sans markdown. \
         Pas d'import ni export."
