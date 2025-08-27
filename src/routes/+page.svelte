@@ -38,6 +38,12 @@
     }
   
     async function handleGenerate() {
+      if (!apiKey) {
+          error = 'Please set your OpenAI API key first You can find your API key at https://platform.openai.com/account/api-keys.';
+          openApiModal();
+          return;
+      }
+
       if (!prompt) return;
       loading = true;
       error = '';
@@ -58,6 +64,10 @@
         prompt = '';  // Clear pour next itération
       } catch (e) {
         error = e.message;
+        if (error.includes("Incorrect API key provided")) {
+            error = 'Erreur API: Incorrect API key provided You can find your API key at https://platform.openai.com/account/api-keys.';
+            openApiModal(); // Ouvre le modal pour changer la clé API
+        }
       } finally {
         loading = false;
       }
@@ -150,10 +160,18 @@
   <!-- Controls -->
   <div class="controls">
     <button on:click={handleGenerate} disabled={loading}>
-      {loading ? "Generating..." : "Generate / Iterate"}
+    {loading ? "Génération..." : "Générer/Itérer"}
     </button>
     <button on:click={undo} disabled={historyStack.length === 0}>Undo</button>
+    <button on:click={toggleLayout}>
+    Basculer en {layout === "horizontal" ? "vertical" : "horizontal"}
+    </button>
   </div>
+
+  {#if error}
+    <p class="error">{error}</p>
+  {/if}
+
   
   <!-- Layout -->
   <div class="container {layout}">
@@ -350,7 +368,6 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 1rem;
-      width: 100%;
       text-align: center;
     }
   
@@ -384,5 +401,7 @@
     .modal-actions button:last-child {
       background: #ddd;
     }
+    .error { color: red; text-align: center; }
+    #preview-target { min-height: 200px; border: 1px solid #a9ffae; padding: 10px; }
   </style>
   
