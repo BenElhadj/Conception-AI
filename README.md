@@ -77,6 +77,7 @@ Elle utilise l'API OpenAI fournie par l'utilisateur et propose :
 
 ##  Structure du projet
 
+```
 src/
 ├─ lib/
 │   ├─ assets/                                  # Ressources statiques (icônes, images éventuelles)
@@ -100,7 +101,7 @@ src/
 │
 └─ routes/
     └─ +page.svelte                             # Page principale intégrant tous les composants
-
+```
 
 - **api.js : gère les appels à l'API OpenAI et retourne le code généré.**
 
