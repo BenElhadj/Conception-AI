@@ -98,6 +98,7 @@
         // Extraire style et script
         const styleMatch = cleanCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
         const scriptMatch = cleanCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+        
 
         let htmlOnly = cleanCode
           .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
@@ -149,11 +150,13 @@
       {apiKey ? "Change API Key" : "Add API Key"}
     </button>
     <h1>Conception AI – Svelte Page Generator</h1>
-    <button class="layout-btn" on:click={toggleLayout}>
+    <button 
+      class="layout-btn { $layout }" 
+      on:click={toggleLayout}>
       {#if $layout === "horizontal"}
-        <img src="/src/lib/assets/horizontal_menu_burger.png" alt="Toggle Layout" style="width: 24px; height: 24px;" />
+        ≡
       {:else}
-        <img src="/src/lib/assets/vertical_menu_burger.png" alt="Toggle Layout" style="width: 24px; height: 24px;" />
+        <span style="font-size: 1.3rem;">lll</span>
       {/if}
     </button>
   </div>
