@@ -76,29 +76,30 @@ Elle utilise l'API OpenAI fournie par l'utilisateur et propose :
 5. L'historique complet de la conversation est affiché en bas de page.
 
 ##  Structure du projet
+
 src/
 ├─ lib/
-│   ├─ assets/ .................................... # Ressources statiques (icônes, images éventuelles)
-│   ├─ components/ ................................ # Composants UI
-│   │   ├─ ApiModal.svelte ........................ # Modal pour saisir/éditer la clé API
-│   │   ├─ CodePanel.svelte ....................... # Affiche le code généré + bouton de téléchargement
-│   │   ├─ Controls.svelte ........................ # Boutons de génération / undo
-│   │   ├─ ConversationHistory.svelte ............. # Liste des prompts + réponses (chat history)
-│   │   ├─ Header.svelte .......................... # Header principal (API Key + Layout toggle)
-│   │   ├─ PreviewPanel.svelte .................... # Affiche le rendu live du code généré dans un iframe
-│   │   └─ PromptPanel.svelte ..................... # Zone de texte pour écrire un prompt
+│   ├─ assets/                                  # Ressources statiques (icônes, images éventuelles)
+│   ├─ components/                              # Composants UI
+│   │   ├─ ApiModal.svelte                      # Modal pour saisir/éditer la clé API
+│   │   ├─ CodePanel.svelte                     # Affiche le code généré + bouton de téléchargement
+│   │   ├─ Controls.svelte                      # Boutons de génération / undo
+│   │   ├─ ConversationHistory.svelte           # Liste des prompts + réponses (chat history)
+│   │   ├─ Header.svelte                        # Header principal (API Key + Layout toggle)
+│   │   ├─ PreviewPanel.svelte                  # Affiche le rendu live du code généré dans un iframe
+│   │   └─ PromptPanel.svelte                   # Zone de texte pour écrire un prompt
 │   │
-│   ├─ history/ ................................... # Gestion de l'historique et du state persistant
-│   │   ├─ chat.js ................................ # Stores Svelte : conversation, stack undo, code généré, layout
-│   │   └─ persisted.js ........................... # Helper pour persister un store Svelte dans localStorage
+│   ├─ history/                                 # Gestion de l'historique et du state persistant
+│   │   ├─ chat.js                              # Stores Svelte : conversation, stack undo, code généré, layout
+│   │   └─ persisted.js                         # Helper pour persister un store Svelte dans localStorage
 │   │
 │   ├─ styles/
-│   │   └─ app.css ................................ # Styles globaux + responsive + modal
+│   │   └─ app.css                              # Styles globaux + responsive + modal
 │   │
-│   └─ api.js ..................................... # Gestion des appels API vers OpenAI (fetch)
+│   └─ api.js                                   # Gestion des appels API vers OpenAI (fetch)
 │
 └─ routes/
-    └─ +page.svelte ............................... # Page principale intégrant tous les composants
+    └─ +page.svelte                             # Page principale intégrant tous les composants
 
 
 - **api.js : gère les appels à l'API OpenAI et retourne le code généré.**
