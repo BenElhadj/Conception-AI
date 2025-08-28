@@ -1,7 +1,8 @@
-# Conception AI – Svelte Page Generator
+# Conception AI - Svelte Page Generator
 
-Ce projet est une **application front-end client-only** développée en **SvelteKit**, qui permet de générer dynamiquement des pages Svelte à partir de prompts en langage naturel.  
-Elle utilise l’API OpenAI fournie par l’utilisateur et propose :  
+Ce projet est une **application front-end client-only** développée en **SvelteKit**, qui permet de générer dynamiquement des pages Svelte à partir de prompts en langage naturel.
+Cette application est conçue pour être utilisée uniquement côté client, sans backend.  
+Elle utilise l'API OpenAI fournie par l'utilisateur et propose :  
 - Génération de code depuis un prompt texte  
 - Itération conversationnelle (raffinage du résultat)  
 - Fonction **Undo** (annuler la dernière génération)  
@@ -15,10 +16,10 @@ Elle utilise l’API OpenAI fournie par l’utilisateur et propose :
 
 - **Prompt utilisateur** → génère automatiquement du code Svelte minimal.  
 - **Conversation** : chaque nouveau prompt affine le résultat (le contexte est conservé).  
-- **Undo** : revenir à la version précédente du code et de l’historique.  
+- **Undo** : revenir à la version précédente du code et de l'historique.  
 - **Affichage du code** et du **rendu visuel** généré.  
 - **Modal de gestion de clé API** (saisie / modification, stockée en `localStorage`).  
-- **Layout switch horizontal/vertical** pour adapter l’affichage.  
+- **Layout switch horizontal/vertical** pour adapter l'affichage.  
 - **Responsive** : interface adaptée aux petits écrans.  
 
 ---
@@ -54,7 +55,7 @@ Elle utilise l’API OpenAI fournie par l’utilisateur et propose :
 
 **Vous pouvez la modifier à tout moment avec “Change API Key”.**
 
-**⚠️ La clé n’est jamais stockée côté serveur ni exposée dans le code source.**
+**⚠️ La clé n'est jamais stockée côté serveur ni exposée dans le code source.**
 
 ##  Utilisation
 
@@ -68,11 +69,11 @@ Elle utilise l’API OpenAI fournie par l’utilisateur et propose :
     **Le rendu visuel apparaît dans la section Preview.**
 
 3. Pour raffiner : tapez un nouveau prompt (“Rends le bouton rouge et ajoute un paragraphe”).
-→ Le contexte est conservé grâce à l’historique conversationnel.
+→ Le contexte est conservé grâce à l'historique conversationnel.
 
 4. Pour annuler la dernière génération, cliquez sur Undo.
 
-5. L’historique complet de la conversation est affiché en bas de page.
+5. L'historique complet de la conversation est affiché en bas de page.
 
 ##  Structure du projet
 src/
@@ -87,7 +88,7 @@ src/
 │   │   ├─ PreviewPanel.svelte .................... # Affiche le rendu live du code généré dans un iframe
 │   │   └─ PromptPanel.svelte ..................... # Zone de texte pour écrire un prompt
 │   │
-│   ├─ history/ ................................... # Gestion de l’historique et du state persistant
+│   ├─ history/ ................................... # Gestion de l'historique et du state persistant
 │   │   ├─ chat.js ................................ # Stores Svelte : conversation, stack undo, code généré, layout
 │   │   └─ persisted.js ........................... # Helper pour persister un store Svelte dans localStorage
 │   │
@@ -100,7 +101,7 @@ src/
     └─ +page.svelte ............................... # Page principale intégrant tous les composants
 
 
-- **api.js : gère les appels à l’API OpenAI et retourne le code généré.**
+- **api.js : gère les appels à l'API OpenAI et retourne le code généré.**
 
 - **+page.svelte : UI principale (prompt, code, preview, undo, historique, modal API key).**
 
@@ -113,7 +114,7 @@ src/
 
 - Pour générer un site statique :
 
-- **Installer l’adapter :**
+- **Installer l'adapter :**
 
 - npm install -D @sveltejs/adapter-static
 
@@ -141,7 +142,7 @@ export default {
 
 - La clé API est stockée en localStorage et utilisée telle quelle.
 
-- La sécurité n’est pas garantie pour un usage en production (exercice technique uniquement).
+- La sécurité n'est pas garantie pour un usage en production (exercice technique uniquement).
 
 - Le rendu du code repose sur une injection HTML/JS simple ({@html} + new Function), donc limité en complexité.
 
