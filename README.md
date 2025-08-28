@@ -1,6 +1,6 @@
 # Conception AI – Svelte Page Generator
 
-Ce projet est une **application front-end client-only** développée en **SvelteKit**, qui permet de générer dynamiquement des pages Svelte/HTML à partir de prompts en langage naturel.  
+Ce projet est une **application front-end client-only** développée en **SvelteKit**, qui permet de générer dynamiquement des pages Svelte à partir de prompts en langage naturel.  
 Elle utilise l’API OpenAI fournie par l’utilisateur et propose :  
 - Génération de code depuis un prompt texte  
 - Itération conversationnelle (raffinage du résultat)  
@@ -77,19 +77,32 @@ Elle utilise l’API OpenAI fournie par l’utilisateur et propose :
 ##  Structure du projet
 src/
 ├─ lib/
-│   ├─ api.js               # Appel à l’API OpenAI (fetch)
-│   └─ assets/              # Icônes (layout toggle)
+│   ├─ assets/ .................................... # Ressources statiques (icônes, images éventuelles)
+│   ├─ components/ ................................ # Composants UI
+│   │   ├─ ApiModal.svelte ........................ # Modal pour saisir/éditer la clé API
+│   │   ├─ CodePanel.svelte ....................... # Affiche le code généré + bouton de téléchargement
+│   │   ├─ Controls.svelte ........................ # Boutons de génération / undo
+│   │   ├─ ConversationHistory.svelte ............. # Liste des prompts + réponses (chat history)
+│   │   ├─ Header.svelte .......................... # Header principal (API Key + Layout toggle)
+│   │   ├─ PreviewPanel.svelte .................... # Affiche le rendu live du code généré dans un iframe
+│   │   └─ PromptPanel.svelte ..................... # Zone de texte pour écrire un prompt
+│   │
+│   ├─ history/ ................................... # Gestion de l’historique et du state persistant
+│   │   ├─ chat.js ................................ # Stores Svelte : conversation, stack undo, code généré, layout
+│   │   └─ persisted.js ........................... # Helper pour persister un store Svelte dans localStorage
+│   │
+│   ├─ styles/
+│   │   └─ app.css ................................ # Styles globaux + responsive + modal
+│   │
+│   └─ api.js ..................................... # Gestion des appels API vers OpenAI (fetch)
+│
 └─ routes/
-    └─ +page.svelte         # Page principale avec l’interface UI
+    └─ +page.svelte ............................... # Page principale intégrant tous les composants
 
 
 - **api.js : gère les appels à l’API OpenAI et retourne le code généré.**
 
 - **+page.svelte : UI principale (prompt, code, preview, undo, historique, modal API key).**
-
-
-
-
 
 ### Build & Déploiement
 - Build production
@@ -116,21 +129,11 @@ export default {
   }
 };
 
-
 - **Lancer :**
 
 - npm run build
 
-
-→ Les fichiers statiques sont prêts dans le dossier build/.
-
-Déployez sur Netlify
-, Vercel
-, ou GitHub Pages.
-
-
-
-
+===> le projet est déjà déployé sur https://conception-ai.vercel.app/
 
 ### Limitations
 
@@ -142,8 +145,3 @@ Déployez sur Netlify
 
 - Le rendu du code repose sur une injection HTML/JS simple ({@html} + new Function), donc limité en complexité.
 
-
-
-### Auteur
-
-- **Projet réalisé par Hamdi BEN ELHADJ Candidat Frontend Developer – Conception AI**
