@@ -25,11 +25,11 @@
   let showApiModal = false;
 
   onMount(() => {
-    if (browser) {
-      console.log('App mounted successfully');
-      console.log('Current path:', window.location.pathname);
-      console.log('Base URL:', import.meta.env.BASE_URL);
-    }
+    // if (browser) {
+    //   console.log('App mounted successfully');
+    //   console.log('Current path:', window.location.pathname);
+    //   console.log('Base URL:', import.meta.env.BASE_URL);
+    // }
     apiKey = localStorage.getItem('openai_api_key') || '';
     const codeNow = get(generatedCode);
     if (codeNow) {
