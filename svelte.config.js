@@ -8,9 +8,8 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: 'index.html',
-			precompress: false,
-			strict: true
+			fallback: '404.html', // Gardez 404.html pour GitHub Pages
+			precompress: false
 		}),
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/Conception-AI' : ''

@@ -4,12 +4,23 @@
     export let loading = false;
     export let onGenerate;
     export let onUndo;
-  </script>
-  
-  <div class="controls">
-    <button on:click={onGenerate} disabled={loading}>
-      {loading ? "Generation..." : "Generate new"}
+</script>
+
+<div class="controls">
+    <button 
+        type="button" 
+        on:click={onGenerate} 
+        disabled={loading}
+        aria-label={loading ? "Generating code..." : "Generate new code"}
+    >
+        {loading ? "Generation..." : "Generate new"}
     </button>
-    <button on:click={onUndo} disabled={$historyStack.length === 0}>Undo</button>
-  </div>
-  
+    <button 
+        type="button" 
+        on:click={onUndo} 
+        disabled={$historyStack.length === 0}
+        aria-label="Undo last generation"
+    >
+        Undo
+    </button>
+</div>

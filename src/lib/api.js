@@ -17,8 +17,7 @@ export async function generateCode(messages) {  // Change à messages pour suppo
       messages: [
                 {
           role: "system",
-          content:
-          "Tu es un assistant expert qui génère un composant Svelte \
+          content: "Tu es un assistant expert qui génère un composant Svelte \
           utilisable directement dans une div,\
           toujours dans un fichier .svelte valide.\
           Retourne exactement un seul bloc .svelte avec :\
@@ -27,7 +26,9 @@ export async function generateCode(messages) {  // Change à messages pour suppo
           - un bloc HTML racine <div> ou <main>.\
           N'inclus jamais <html>, <head>, <body>,\
           ni doctype, ni meta, ni title, ni markdown.\
-          Pas d'import ni export par défaut."
+          Pas d'import ni export par défaut.\
+          **IMPORTANT :** Tous les éléments de formulaire (input, textarea, select) \
+          doivent avoir des attributs id, name et autocomplete appropriés pour l'accessibilité."
         },
         ...messages  // Supporte historique conversationnel
       ],

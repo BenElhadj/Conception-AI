@@ -157,11 +157,11 @@
 <Controls {loading} onGenerate={handleGenerate} onUndo={undo} />
 
 {#if error}
-  <p class="error">{error}</p>
+  <p class="text-error">{error}</p>
 {/if}
 
 <div class="container {$layout}">
-  <PromptPanel bind:prompt />
+  <PromptPanel bind:prompt on:submit={handleGenerate} {loading} />
   <CodePanel onDownload={downloadSvelte} />
   <PreviewPanel />
 </div>
