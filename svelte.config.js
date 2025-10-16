@@ -9,10 +9,11 @@ const config = {
 			pages: 'build',
 			assets: 'build',
 			fallback: 'index.html',
-			precompress: false
+			precompress: false,
+			strict: true
 		}),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/nom-de-votre-repo' : '', // Remplacez par le nom de votre repo
+			base: process.env.NODE_ENV === 'production' ? '/Conception-AI' : ''
 		}
 	}
 };
