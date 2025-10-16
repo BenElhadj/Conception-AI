@@ -31,9 +31,12 @@ jobs:
         run: npm install
       
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          touch build/.nojekyll
         env:
           NODE_ENV: production
+          BASE_PATH: '/Conception-AI'
       
       - name: Setup Pages
         uses: actions/configure-pages@v4

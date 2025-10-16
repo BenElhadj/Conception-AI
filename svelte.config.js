@@ -8,11 +8,16 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: '404.html', // Gardez 404.html pour GitHub Pages
-			precompress: false
+			fallback: '404.html',
+			precompress: false,
+			strict: true
 		}),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/Conception-AI' : ''
+			base: process.env.NODE_ENV === 'production' ? '/Conception-AI' : '',
+			relative: false
+		},
+		prerender: {
+			entries: ['*']
 		}
 	}
 };
