@@ -136,7 +136,7 @@ export default {
 
 - npm run build
 
-===> le projet est déjà déployé sur https://conception-ai.vercel.app/
+===> le projet est déjà déployé sur (https://benelhadj.github.io/Conception-AI/)
 
 ### Limitations
 
