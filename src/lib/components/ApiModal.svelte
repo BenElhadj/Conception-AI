@@ -1,11 +1,11 @@
-<script>
-    export let show = false;
-    export let apiKey = '';
-    export let error = '';
-    export let onSave;
-    export let onCancel;
+<script lang="ts">
+    export let show: boolean = false;
+    export let apiKey: string = '';
+    export let error: string = '';
+    export let onSave: (key: string) => void = () => {};
+    export let onCancel: () => void = () => {};
     
-    let tempKey = '';
+    let tempKey: string = '';
     
     // ID unique pour ce composant
     const inputId = 'api-key-input-main';

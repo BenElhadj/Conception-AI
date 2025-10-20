@@ -1,15 +1,18 @@
-<section class="panel">
-    <h2>Preview</h2>
-    <div class="preview-info">
-        <p><small>Note: Accessibility warnings in the preview are normal and come from the AI-generated code.</small></p>
+<section class="panel preview-panel">
+    <div class="panel-header">
+        <h2>Preview</h2>
     </div>
-    <iframe 
-        id="preview-iframe" 
-        class="preview"
-        sandbox="allow-scripts"
-        referrerpolicy="no-referrer"
-        title="Preview Generated Code"
-        aria-label="Live preview of generated Svelte code"
-        loading="lazy"
-    ></iframe>
+    <div class="panel-content">
+        <div class="preview-iframe-container">
+            <iframe 
+                id="preview-iframe" 
+                class="preview-iframe"
+                sandbox="allow-scripts allow-same-origin"
+                referrerpolicy="no-referrer"
+                title="Preview Generated Code"
+                aria-label="Live preview of generated Svelte code"
+                loading="lazy"
+            ></iframe>
+        </div>
+    </div>
 </section>

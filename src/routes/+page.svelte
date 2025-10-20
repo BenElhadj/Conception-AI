@@ -9,7 +9,6 @@
   // Import des composants
   import Header from '$lib/components/Header.svelte';
   import ApiModal from '$lib/components/ApiModal.svelte';
-  import Controls from '$lib/components/Controls.svelte';
   import PromptPanel from '$lib/components/PromptPanel.svelte';
   import CodePanel from '$lib/components/CodePanel.svelte';
   import PreviewPanel from '$lib/components/PreviewPanel.svelte';
@@ -21,6 +20,7 @@
   let apiKey = '';
   let prompt = '';
   let error = '';
+  let errorLink = '';
   let loading = false;
   let showApiModal = false;
 
@@ -47,6 +47,7 @@
     localStorage.setItem('openai_api_key', apiKey);
     showApiModal = false;
     error = '';
+    errorLink = '';
     alert('API Key saved.');
   }
 
@@ -56,7 +57,8 @@
 
   async function handleGenerate() {
     if (!apiKey) {
-      error = 'Please set your OpenAI API key first You can find your API key at https://platform.openai.com/account/api-keys.';
+      error = 'Please set your OpenAI API key first.';
+      errorLink = 'https://platform.openai.com/account/api-keys';
       openApiModal();
       return;
     }
@@ -78,7 +80,8 @@
     } catch (e) {
       error = e.message;
       if (error.includes("Incorrect API key provided")) {
-        error = 'Erreur API: Incorrect API key provided You can find your API key at https://platform.openai.com/account/api-keys.';
+        error = 'Erreur API: Incorrect API key provided.';
+        errorLink = 'https://platform.openai.com/account/api-keys';
         openApiModal();
       }
     } finally {
@@ -98,37 +101,51 @@
   }
 
   function compileAndRender(code) {
-    try {
-      const cleanCode = code
-        .replace(/<!DOCTYPE[^>]*>/gi, '')
-        .replace(/<\/?(html|head|body)[^>]*>/gi, '');
+      try {
+          const cleanCode = code
+              .replace(/<!DOCTYPE[^>]*>/gi, '')
+              .replace(/<\/?(html|head|body)[^>]*>/gi, '');
 
-      const styleMatch = cleanCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-      const scriptMatch = cleanCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
+          const styleMatch = cleanCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+          const scriptMatch = cleanCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
 
-      let htmlOnly = cleanCode
-        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+          let htmlOnly = cleanCode
+              .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+              .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
 
-      const srcdoc = `
-        <html>
-          <head>
-            ${styleMatch ? `<style>${styleMatch[1]}</style>` : ""}
-          </head>
-          <body>
-            ${htmlOnly}
-            ${scriptMatch ? `<script>${scriptMatch[1]}<\/script>` : ""}
-          </body>
-        </html>
-      `;
+          // Créer un document HTML complet mais isolé
+          const srcdoc = `
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <style>
+                        /* Reset minimal pour éviter les interférences */
+                        body { 
+                            margin: 0; 
+                            padding: 0;
+                            font-family: inherit;
+                            background: white;
+                        }
+                        /* Les styles générés par l'IA s'appliqueront normalement */
+                    </style>
+                    ${styleMatch ? `<style>${styleMatch[1]}</style>` : ""}
+                </head>
+                <body>
+                    ${htmlOnly}
+                    ${scriptMatch ? `<script>${scriptMatch[1]}<\/script>` : ""}
+                </body>
+            </html>
+          `;
 
-      const iframe = document.getElementById("preview-iframe");
-      if (iframe) {
-        iframe.srcdoc = srcdoc;
+          const iframe = document.getElementById("preview-iframe");
+          if (iframe) {
+              iframe.srcdoc = srcdoc;
+          }
+      } catch (e) {
+          error = `Render error: ${e.message}`;
       }
-    } catch (e) {
-      error = `Render error: ${e.message}`;
-    }
   }
 
   function downloadSvelte() {
@@ -154,15 +171,25 @@
   onCancel={closeApiModal} 
 />
 
-<Controls {loading} onGenerate={handleGenerate} onUndo={undo} />
-
 {#if error}
-  <p class="text-error">{error}</p>
+  <p class="text-error">
+    {error}
+    {#if errorLink}
+      <br />
+      <a href={errorLink} target="_blank" rel="noopener noreferrer">{errorLink}</a>
+    {/if}
+  </p>
 {/if}
 
 <div class="container {$layout}">
   <div class="panel prompt-panel">
-    <PromptPanel bind:prompt on:submit={handleGenerate} {loading} />
+    <PromptPanel 
+        bind:prompt 
+        onGenerate={handleGenerate} 
+        onUndo={undo}
+        {loading}
+        canUndo={$historyStack.length > 0}
+    />
   </div>
   <div class="panel code-panel">
     <CodePanel onDownload={downloadSvelte} />

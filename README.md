@@ -84,7 +84,6 @@ src/
 │   ├─ components/                              # Composants UI
 │   │   ├─ ApiModal.svelte                      # Modal pour saisir/éditer la clé API
 │   │   ├─ CodePanel.svelte                     # Affiche le code généré + bouton de téléchargement
-│   │   ├─ Controls.svelte                      # Boutons de génération / undo
 │   │   ├─ ConversationHistory.svelte           # Liste des prompts + réponses (chat history)
 │   │   ├─ Header.svelte                        # Header principal (API Key + Layout toggle)
 │   │   ├─ PreviewPanel.svelte                  # Affiche le rendu live du code généré dans un iframe

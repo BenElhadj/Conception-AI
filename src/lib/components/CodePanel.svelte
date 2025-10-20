@@ -4,23 +4,28 @@
     export let onDownload;
 </script>
 
-<section class="panel">
-    <h2>Generated Code</h2>
-    <pre aria-live="polite" aria-atomic="true">
-        {#if $generatedCode}
-            <code>{$generatedCode}</code>
-        {:else}
-            <code class="no-code">No code generated yet</code>
-        {/if}
-    </pre>
-    {#if $generatedCode}
-        <button 
-            type="button" 
-            on:click={onDownload}
-            aria-label="Download generated Svelte component"
-            class="btn btn-primary"
-        >
-            Download .svelte
-        </button>
-    {/if}
+<section class="panel code-panel">
+    <div class="panel-header">
+        <h2>Generated Code</h2>
+        <div class="panel-actions">
+            {#if $generatedCode}
+                <button 
+                    class="btn-icon success"
+                    on:click={onDownload}
+                    title="Download"
+                >
+                    📥
+                </button>
+            {/if}
+        </div>
+    </div>
+    <div class="panel-content">
+        <pre class="scrollable" aria-live="polite" aria-atomic="true">
+            {#if $generatedCode}
+                <code>{$generatedCode}</code>
+            {:else}
+                <code class="no-code">// Your generated code will appear here</code>
+            {/if}
+        </pre>
+    </div>
 </section>

@@ -1,46 +1,92 @@
-<script>
-    export let prompt = '';
-    export let loading = false;
+<script lang="ts">
+    export let prompt: string = '';
+    export let loading: boolean = false;
+    export let onGenerate: () => void;
+    export let onUndo: () => void;
+    export let canUndo: boolean = false;
     
     // ID unique pour ce composant
-    const textareaId = 'prompt-textarea-main';
+    const textareaId: string = 'prompt-textarea-main';
     
-    // Événement pour la soumission
-    import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher();
-    
-    function handleKeydown(event) {
+    function handleKeydown(event: KeyboardEvent): void {
         if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
             // Ctrl+Enter ou Cmd+Enter pour soumettre
             event.preventDefault();
             if (!loading && prompt.trim()) {
-                dispatch('submit');
+                onGenerate();
             }
         } else if (event.key === 'Enter' && !event.shiftKey) {
             // Enter seul pour soumettre (sans Shift)
             event.preventDefault();
             if (!loading && prompt.trim()) {
-                dispatch('submit');
+                onGenerate();
             }
         }
         // Shift+Enter permet d'aller à la ligne normalement
     }
+    
+    function handleGenerate(): void {
+        if (!loading && prompt.trim()) {
+            onGenerate();
+        }
+    }
 </script>
 
-<section class="panel">
-    <h2>Prompt</h2>
-    <label for={textareaId} class="sr-only">Enter your prompt to generate Svelte code</label>
-    <textarea 
-        id={textareaId}
-        name="user_prompt"
-        bind:value={prompt} 
-        placeholder="Describe or refine the page... (e.g., 'Add a red button') - Press Enter to generate"
-        autocomplete="off"
-        rows="4"
-        on:keydown={handleKeydown}
-        disabled={loading}
-    ></textarea>
-    <div class="help-text">
-        <small>Press Enter to generate • Shift+Enter for new line</small>
+<section class="panel prompt-panel">
+    <div class="prompt-container">
+        <div class="prompt-header">
+            <h2>Prompt</h2>
+            <div class="prompt-actions">
+                <button 
+                    class="btn-icon accent"
+                    on:click={handleGenerate}
+                    disabled={loading || !prompt.trim()}
+                    data-tooltip="Generate code (Enter)"
+                    title="Generate code"
+                >
+                    ⚡
+                </button>
+                <button 
+                    class="btn-icon"
+                    on:click={onUndo}
+                    disabled={!canUndo || loading}
+                    data-tooltip="Undo last generation"
+                    title="Undo"
+                >
+                    ↩️
+                </button>
+            </div>
+        </div>
+        
+        <div class="prompt-textarea-container">
+            <label for={textareaId} class="sr-only">Enter your prompt to generate Svelte code</label>
+            <textarea 
+                id={textareaId}
+                name="user_prompt"
+                bind:value={prompt} 
+                placeholder="Describe what you want to create... (e.g., 'Create a login form with email and password fields')"
+                autocomplete="off"
+                rows="3"
+                on:keydown={handleKeydown}
+                disabled={loading}
+                class="prompt-textarea scrollable"
+            ></textarea>
+        </div>
+        
+        {#if loading}
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <span>Generating code...</span>
+            </div>
+        {/if}
+        
+        <div class="help-text">
+            <small>Describe your component and press Enter to generate</small>
+            <div class="enter-hint">
+                <span>Press</span>
+                <span class="enter-icon">Enter</span>
+                <span>to generate</span>
+            </div>
+        </div>
     </div>
 </section>
