@@ -34,3 +34,37 @@
         </button>
     </div>
 </div>
+
+<style>
+    .layout-btn {
+        background: var(--white);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius);
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    .layout-btn:hover {
+        background: var(--gray-50);
+        border-color: var(--gray-400);
+        transform: scale(1.05);
+    }
+    
+    .layout-btn.horizontal::before {
+        content: '☰';
+        font-size: 1.2rem;
+    }
+    
+    .layout-btn.vertical::before {
+        content: '≡';
+        font-size: 1.2rem;
+        transform: rotate(90deg);
+        display: block;
+    }
+</style>

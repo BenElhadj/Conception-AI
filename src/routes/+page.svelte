@@ -161,9 +161,16 @@
 {/if}
 
 <div class="container {$layout}">
-  <PromptPanel bind:prompt on:submit={handleGenerate} {loading} />
-  <CodePanel onDownload={downloadSvelte} />
-  <PreviewPanel />
+  <div class="panel prompt-panel">
+    <PromptPanel bind:prompt on:submit={handleGenerate} {loading} />
+  </div>
+  <div class="panel code-panel">
+    <CodePanel onDownload={downloadSvelte} />
+  </div>
+  <div class="panel preview-panel">
+    <PreviewPanel />
+  </div>
+  <div class="panel history-panel">
+    <ConversationHistory />
+  </div>
 </div>
-
-<ConversationHistory />
