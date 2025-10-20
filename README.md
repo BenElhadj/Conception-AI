@@ -148,3 +148,32 @@ export default {
 
 - Le rendu du code repose sur une injection HTML/JS simple ({@html} + new Function), donc limité en complexité.
 
+# Conception AI - Svelte Page Generator
+
+🚀 Generate Svelte components with AI
+
+[![GitHub Pages Deployment](https://github.com/BenElhadj/Conception-AI/actions/workflows/deploy.yml/badge.svg)](https://github.com/BenElhadj/Conception-AI/actions)
+[![Live Demo](https://img.shields.io/badge/demo-live-green.svg)](https://BenElhadj.github.io/Conception-AI/)
+
+## 🎯 Features
+
+- AI-powered Svelte component generation
+- Real-time preview
+- Conversation history
+- Code download
+- Responsive design
+
+## 🚀 Deployment
+
+This project is automatically deployed to GitHub Pages via GitHub Actions on every push to `main`.
+
+**Live site:** https://BenElhadj.github.io/Conception-AI/
+
+## 🛠 Development
+
+```bash
+npm install
+npm run dev
+
+# Build for production
+npm run build
