@@ -56,7 +56,8 @@
 :global(body) {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--neutral-50);
+  /* background: var(--neutral-50); */
+  background: none  !important;
   color: var(--neutral-800);
   line-height: 1.5;
   min-height: 100vh;
@@ -150,13 +151,13 @@
   padding: 0;
   border: none;
   border-radius: var(--radius);
-  background: transparent;
+  background: none  !important;
   cursor: pointer;
   transition: var(--transition);
   font-size: 1.5rem;
   position: relative;
-  flex: 0 0 40px; /* don't grow or shrink in flex layouts */
-  transform-origin: center center; /* scale from center */
+  flex: 0 0 40px;
+  transform-origin: center center;
 }
 
 .btn-icon:hover {
@@ -807,4 +808,14 @@
 /* .preview-iframe-container, */
 .prompt-panel textarea {
   overflow: auto;
+}
+
+/* Bouton désactivé visuel pour Generate code */
+.disabled-btn {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(0.7);
+  cursor: not-allowed !important;
+  color: var(--neutral-500) !important;
+  box-shadow: none !important;
 }

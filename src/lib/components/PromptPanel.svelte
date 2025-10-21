@@ -4,6 +4,8 @@
     export let onGenerate: () => void;
     export let onUndo: () => void;
     export let canUndo: boolean = false;
+    export let onRedo: () => void;
+    export let canRedo: boolean = false;
     
     // ID unique pour ce composant
     const textareaId: string = 'prompt-textarea-main';
@@ -38,7 +40,16 @@
             <h2>Prompt</h2>
             <div class="prompt-actions">
                 <button 
-                    class="btn-icon accent"
+                    class="btn-icon"
+                    on:click={onUndo}
+                    disabled={!canUndo || loading}
+                    data-tooltip="Undo last generation"
+                    title="Undo"
+                    >
+                    ↩️
+                </button>
+                <button 
+                    class="btn-icon accent {loading || !prompt.trim() ? 'disabled-btn' : ''}"
                     on:click={handleGenerate}
                     disabled={loading || !prompt.trim()}
                     data-tooltip="Generate code (Enter)"
@@ -48,12 +59,12 @@
                 </button>
                 <button 
                     class="btn-icon"
-                    on:click={onUndo}
-                    disabled={!canUndo || loading}
-                    data-tooltip="Undo last generation"
-                    title="Undo"
+                    on:click={onRedo}
+                    disabled={!canRedo || loading}
+                    data-tooltip="Redo (rendo)"
+                    title="Redo"
                 >
-                    ↩️
+                    ↪️
                 </button>
             </div>
         </div>

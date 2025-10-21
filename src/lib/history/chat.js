@@ -11,3 +11,6 @@ export const generatedCode = persisted('generated_code', '');
 
 // Layout (horizontal|vertical)
 export const layout = persisted('layout_pref', 'horizontal');
+
+// Pile redo persistante
+export const futureStack = persisted('future_stack', []);

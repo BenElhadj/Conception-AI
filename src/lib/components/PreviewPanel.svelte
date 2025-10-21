@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
     import { generatedCode } from '$lib/history/chat.js';
     import { onMount } from 'svelte';
-    let iframeEl;
+    let iframeEl: HTMLIFrameElement | null = null;
 
     // Génère le srcdoc à partir du code généré
-    function getSrcdoc(code) {
+    function getSrcdoc(code: string | null | undefined): string {
         if (!code) return '';
         const cleanCode = code
             .replace(/<!DOCTYPE[^>]*>/gi, '')
@@ -55,7 +55,7 @@
                     bind:this={iframeEl}
                     id="preview-iframe" 
                     class="preview-iframe"
-                    sandbox="allow-scripts allow-same-origin"
+                    sandbox="allow-scripts"
                     referrerpolicy="no-referrer"
                     title="Preview Generated Code"
                     aria-label="Live preview of generated Svelte code"
