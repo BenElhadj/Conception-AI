@@ -1,3 +1,13 @@
+.code-panel .panel-content {
+  background: var(--neutral-900);
+}
+/* Fond sombre et texte blanc pour l'état vide du code panel */
+.code-panel .empty-state {
+  background: var(--neutral-900);
+  color: var(--neutral-100);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: none;
+}
 /* ===== VARIABLES CSS ÉPURÉES ===== */
 :root {
   /* Palette sobre */
@@ -424,7 +434,9 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden; 
+  overflow: hidden;
+  flex-direction: column-reverse; /* Les nouveaux messages en bas */
+
 }
 
 /* ===== PANNEAU CODE ===== */
@@ -450,6 +462,27 @@
   font-style: italic;
   text-align: center;
   padding: 2rem;
+}
+
+.code-panel .code-empty-state {
+  color: var(--neutral-100);
+  text-align: center;
+  padding: 2.5rem 2rem;
+  font-size: 1rem;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.code-panel .code-empty-state p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.code-panel .code-empty-state small {
+  font-size: 0.85rem;
+  opacity: 0.8;
 }
 
 /* ===== PREVIEW ===== */
@@ -478,7 +511,14 @@
   overflow-y: auto;
   min-height: 0;
   display: flex;
-  flex-direction: column-reverse; /* Les nouveaux messages en bas */
+}
+
+/* Empty state in history panel should always be at the top */
+.history-panel .empty-state {
+  order: -1;
+  margin-bottom: 0;
+  margin-top: 0;
+  flex-direction: column; 
 }
 
 .conversation-list {
@@ -674,17 +714,31 @@
       "preview"
       "history" !important;
     padding: 0 1rem 1rem;
-    height: auto;
-    min-height: calc(100vh - 120px);
+    color: var(--neutral-500);
+    font-size: 0.95rem;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
   }
   
   .header {
-    padding: 0.75rem 1rem;
+  .empty-state p {
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+    font-size: 1.05rem;
   }
-  
-  .header h1 {
-    font-size: 1.125rem;
+  .empty-state small {
+    font-size: 0.85rem;
+    opacity: 0.75;
+  }
+
+  /* Affichage blanc sur fond sombre dans le code panel */
+  .code-panel .empty-state {
+    color: var(--neutral-100);
+  }
   }
   
   .panel {

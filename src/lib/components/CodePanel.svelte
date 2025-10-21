@@ -20,12 +20,16 @@
         </div>
     </div>
     <div class="panel-content">
-        <pre class="scrollable" aria-live="polite" aria-atomic="true">
-            {#if $generatedCode}
+        {#if !$generatedCode}
+            <div class="empty-state">
+                <p>No generated code yet</p>
+                <small>Generate code to see it here</small>
+            </div>
+        {/if}
+        {#if $generatedCode}
+            <pre class="scrollable" aria-live="polite" aria-atomic="true">
                 <code>{$generatedCode}</code>
-            {:else}
-                <code class="no-code">// Your generated code will appear here</code>
-            {/if}
-        </pre>
+            </pre>
+        {/if}
     </div>
 </section>
