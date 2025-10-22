@@ -771,6 +771,16 @@
   }
 }
 
+/* Améliore le scroll mobile pour l'historique */
+@media (pointer: coarse) {
+  .history-panel .panel-content {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+}
+
 /* ===== UTILITAIRES ===== */
 .sr-only {
   position: absolute;
